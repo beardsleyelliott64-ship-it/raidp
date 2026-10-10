@@ -1,7 +1,0 @@
-Railway quick start:
-- Upload the ZIP contents to a GitHub repository or use Railway's supported source deployment.
-- Add a PostgreSQL service.
-- Set DISCORD_TOKEN, DISCORD_CLIENT_ID, DATABASE_URL, and optional GEMINI_API_KEY in Variables.
-- Add DISCORD_GUILD_ID for test-server command registration.
-- In a local terminal with variables set, run: npm install && npm run register
-- Deploy the bot service. Railway starts it with npm start.
