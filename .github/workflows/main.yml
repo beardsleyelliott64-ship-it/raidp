@@ -1,0 +1,177 @@
+name: Install Project
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    name: Install Project
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Find project ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          ZIP="$(find . \
+            -maxdepth 3 \
+            -type f \
+            -iname '*.zip' \
+            ! -path './.git/*' \
+            ! -path './.github/*' \
+            | head -n 1 || true)"
+
+          if [ -z "$ZIP" ]; then
+            echo "::error::No project ZIP was found."
+            echo "Upload the project ZIP to the repository and run this workflow again."
+            exit 1
+          fi
+
+          echo "Found project ZIP: $ZIP"
+          echo "ZIP_PATH=$ZIP" >> "$GITHUB_ENV"
+
+      - name: Prepare extraction directory
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          rm -rf _project
+          mkdir -p _project
+
+      - name: Extract project ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          unzip -q "$ZIP_PATH" -d _project
+
+          echo "Extracted project contents:"
+          find _project -maxdepth 3 -type f -print | head -200
+
+      - name: Find project root
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ -f "_project/package.json" ]; then
+            ROOT="_project"
+          else
+            PACKAGE="$(find _project \
+              -type f \
+              -name 'package.json' \
+              ! -path '*/node_modules/*' \
+              | head -n 1 || true)"
+
+            if [ -z "$PACKAGE" ]; then
+              echo "::error::package.json was not found inside the ZIP."
+              exit 1
+            fi
+
+            ROOT="$(dirname "$PACKAGE")"
+          fi
+
+          echo "Project root: $ROOT"
+          echo "PROJECT_ROOT=$ROOT" >> "$GITHUB_ENV"
+
+      - name: Install project files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          echo "Copying project from:"
+          echo "$PROJECT_ROOT"
+
+          rsync -a \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='node_modules/' \
+            "$PROJECT_ROOT/" ./
+
+      - name: Remove installer files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          rm -rf _project
+
+          if [ -n "${ZIP_PATH:-}" ] && [ -f "$ZIP_PATH" ]; then
+            rm -f "$ZIP_PATH"
+          fi
+
+      - name: Verify project
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          echo "Checking installed project..."
+
+          if [ ! -f package.json ]; then
+            echo "::error::package.json is missing."
+            exit 1
+          fi
+
+          if [ ! -f src/index.js ] && [ ! -f index.js ]; then
+            echo "::error::No src/index.js or index.js was found."
+            exit 1
+          fi
+
+          echo
+          echo "===== package.json ====="
+          cat package.json
+
+          echo
+          echo "===== Project files ====="
+          find . \
+            -maxdepth 3 \
+            -type f \
+            ! -path './.git/*' \
+            ! -path './.github/*' \
+            ! -path './node_modules/*' \
+            | sort
+
+          echo
+          echo "Project verification successful."
+
+      - name: Stage project changes
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git add -A
+
+          # NEVER include GitHub Actions workflow changes.
+          git restore --staged .github/ 2>/dev/null || true
+
+          echo "Staged changes:"
+          git diff --cached --name-status
+
+      - name: Commit project
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git diff --cached --quiet; then
+            echo "No project changes need committing."
+            exit 0
+          fi
+
+          git commit -m "Install project"
+
+      - name: Push project
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git push origin HEAD:main
