@@ -1,0 +1,49 @@
+{
+    "text": "## Languagenut Settings\n\n**Fake Time**\n${userSetting.min}-${userSetting.max} Seconds\n> Fake Time is the time that the teachers will see — not how long the bot will actually take. Fake Time is **PER QUESTION**, not per homework. The recommended Fake Time is 10-30s and cannot be set above 180s to prevent getting caught!\n**Accuracy**\n${userSetting.accuracy}%\n> Accuracy is how accurate the bot will be when answering questions. This can be reduced from the standard 100% if you believe getting too high accuracy will make it look suspicious.",
+    "colour": "languagenut",
+    "settings": {
+        "fake_time": {
+            "label": "Edit Time",
+            "emoji": "queue",
+            "inputs": [
+                {
+                    "type": "number",
+                    "id": "min",
+                    "label": "Min Time (Seconds)",
+                    "placeholder": "0-180",
+                    "valueRange": {
+                        "max": 180,
+                        "min": 0
+                    }
+                },
+                {
+                    "type": "number",
+                    "id": "max",
+                    "label": "Max Time (Seconds)",
+                    "placeholder": "0-180",
+                    "valueRange": {
+                        "max": 180,
+                        "min": 0
+                    }
+                }
+            ]
+        },
+        "accuracy": {
+            "label": "Accuracy",
+            "emoji": "x",
+            "inputs": [
+                {
+                    "type": "number",
+                    "id": "accuracy",
+                    "label": "Accuracy",
+                    "placeholder": "0-100",
+                    "valueRange": {
+                        "max": 100,
+                        "min": 0
+                    }
+                }
+            ]
+        }
+    },
+    "constraints": ["min <= max"]
+}
