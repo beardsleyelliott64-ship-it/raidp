@@ -43,7 +43,6 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-
           rm -rf _project
           mkdir -p _project
 
@@ -51,9 +50,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-
           unzip -q "$ZIP_PATH" -d _project
-
           echo "Extracted project contents:"
           find _project -maxdepth 3 -type f -print | head -200
 
@@ -62,21 +59,21 @@ jobs:
         run: |
           set -euo pipefail
 
-          if [ -f "_project/package.json" ]; then
+          # Python project: look for bot.py or requirements.txt
+          if [ -f "_project/bot.py" ] || [ -f "_project/requirements.txt" ]; then
             ROOT="_project"
           else
-            PACKAGE="$(find _project \
+            ENTRY="$(find _project \
               -type f \
-              -name 'package.json' \
-              ! -path '*/node_modules/*' \
+              \( -name 'bot.py' -o -name 'requirements.txt' -o -name 'main.py' \) \
               | head -n 1 || true)"
 
-            if [ -z "$PACKAGE" ]; then
-              echo "::error::package.json was not found inside the ZIP."
+            if [ -z "$ENTRY" ]; then
+              echo "::error::No bot.py or requirements.txt found inside the ZIP."
               exit 1
             fi
 
-            ROOT="$(dirname "$PACKAGE")"
+            ROOT="$(dirname "$ENTRY")"
           fi
 
           echo "Project root: $ROOT"
@@ -86,23 +83,16 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-
-          echo "Copying project from:"
-          echo "$PROJECT_ROOT"
-
           rsync -a \
             --exclude='.git/' \
             --exclude='.github/' \
-            --exclude='node_modules/' \
             "$PROJECT_ROOT/" ./
 
       - name: Remove installer files
         shell: bash
         run: |
           set -euo pipefail
-
           rm -rf _project
-
           if [ -n "${ZIP_PATH:-}" ] && [ -f "$ZIP_PATH" ]; then
             rm -f "$ZIP_PATH"
           fi
@@ -114,19 +104,19 @@ jobs:
 
           echo "Checking installed project..."
 
-          if [ ! -f package.json ]; then
-            echo "::error::package.json is missing."
+          if [ ! -f bot.py ] && [ ! -f main.py ]; then
+            echo "::error::No bot.py or main.py was found."
             exit 1
           fi
 
-          if [ ! -f src/index.js ] && [ ! -f index.js ]; then
-            echo "::error::No src/index.js or index.js was found."
+          if [ ! -f requirements.txt ]; then
+            echo "::error::requirements.txt is missing."
             exit 1
           fi
 
           echo
-          echo "===== package.json ====="
-          cat package.json
+          echo "===== requirements.txt ====="
+          cat requirements.txt
 
           echo
           echo "===== Project files ====="
@@ -135,7 +125,6 @@ jobs:
             -type f \
             ! -path './.git/*' \
             ! -path './.github/*' \
-            ! -path './node_modules/*' \
             | sort
 
           echo
@@ -145,12 +134,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-
           git add -A
-
-          # NEVER include GitHub Actions workflow changes.
           git restore --staged .github/ 2>/dev/null || true
-
           echo "Staged changes:"
           git diff --cached --name-status
 
@@ -158,7 +143,6 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
@@ -173,5 +157,4 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-
           git push origin HEAD:main
