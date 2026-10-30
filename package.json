@@ -1,0 +1,12 @@
+{
+  "name": "predbot",
+  "version": "1.0.0",
+  "main": "bot.js",
+  "scripts": { "start": "node bot.js" },
+  "dependencies": {
+    "discord.js": "^14.16.3",
+    "@google/generative-ai": "^0.21.0",
+    "express": "^4.21.1",
+    "multer": "^1.4.5-lts.1"
+  }
+}
