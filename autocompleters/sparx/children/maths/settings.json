@@ -1,0 +1,77 @@
+{
+    "text": "## Sparx Maths Settings\n\n**PDF Settings**\nAnswers  ``✅``\nQuestions  ${userSetting.pdfSettings?.question ? '``✅``' : '``❌``'}\nWorking Out  ${userSetting.pdfSettings?.working_out ? '``✅``' : '``❌``'}\n> These are the settings for the pdf provided at the end of each session and is what will be included in the pdf.\n**Fake Time**\n${userSetting.min}-${userSetting.max} Seconds\n> Fake Time is the time that the teachers will see — not how long the bot will actually take. Fake Time is **PER QUESTION**, not per homework. The recommended Fake Time is 100-140s and cannot be set above 180s to prevent getting caught!\n**Model Order**\n${userSetting.model ?? 'No Models'}\n> The order of the models that will assist you with your homework.",
+    "colour": "sparx_maths",
+    "settings": {
+        "pdf_settings": {
+            "label": "PDF Settings",
+            "emoji": "pdf",
+            "inputs": [
+                {
+                    "type": "choice",
+                    "id": "question",
+                    "placeholder": "Show the question in the PDF?",
+                    "inside": "pdfSettings",
+                    "boolean": true,
+                    "options": [
+						{ "label": "Show Question", "value": "true" },
+						{ "label": "Don't Show Question", "value": "false" }
+                    ]
+                },
+                {
+                    "type": "choice",
+                    "id": "working_out",
+                    "inside": "pdfSettings",
+                    "boolean": true,
+                    "placeholder": "Show the working out in the PDF?",
+                    "options": [
+                        { "label": "Show Working Out", "value": "true" },
+						{ "label": "Don't Show Working Out", "value": "false" }
+                    ]
+                }
+            ]
+        },
+        "fake_time": {
+            "label": "Edit Time",
+            "emoji": "queue",
+            "inputs": [
+                {
+                    "type": "number",
+                    "id": "min",
+                    "label": "Min Time (Seconds)",
+                    "placeholder": "0-180",
+                    "valueRange": {
+                        "max": 180,
+                        "min": 0
+                    }
+                },
+                {
+                    "type": "number",
+                    "id": "max",
+                    "label": "Max Time (Seconds)",
+                    "placeholder": "0-180",
+                    "valueRange": {
+                        "max": 180,
+                        "min": 0
+                    }
+                }
+            ]
+        },
+        "model_settings": {
+            "label": "Model Settings",
+            "emoji": "x",
+            "inputs": [
+                {
+                    "type": "choice",
+                    "id": "model",
+                    "placeholder": "Model Order",
+                    "options": [
+						{ "label": "No Models", "value": "No Models" },
+						{ "label": "2.5-flash", "value": "2.5-flash" },
+                        { "label": "2.5-flash -> 2.5-pro", "value": "2.5-flash -> 2.5-pro" }
+                    ]
+                }
+            ]
+        }
+    },
+    "constraints": ["min <= max"]
+}
