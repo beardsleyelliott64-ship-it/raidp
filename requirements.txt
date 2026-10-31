@@ -1,1 +1,0 @@
-# Phantom bot is Node-based (launcher.js). Python deps optional for tools.
