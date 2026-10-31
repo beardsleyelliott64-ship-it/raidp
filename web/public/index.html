@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Phantom — Dashboard</title><link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">Phantom</div>
+      <div class="brand-caption">HOMEWORK BOT</div>
+    </div>
+    <nav>
+      <button class="nav active" data-page="home">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Home</span>
+      </button>
+      <button class="nav" data-page="platforms">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        <span>Platforms</span>
+      </button>
+      <button class="nav" data-page="session">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>Session</span>
+      </button>
+      <button class="nav" data-page="logs">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <span>Logs</span>
+      </button>
+      <button class="nav" data-page="settings">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Settings</span>
+      </button>
+    </nav>
+    <div class="sidebar-foot">
+      <span class="dot" id="sidebarDot"></span>
+      <span id="sideStatus">Connecting</span>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="bot-state">
+          <span class="dot" id="topDot"></span>
+          <span id="topStatus">Connecting to Phantom</span>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div class="logo-wrap">
+          <img src="/logo.gif" alt="Phantom" class="logo-gif">
+        </div>
+      </div>
+    </header>
+
+    <!-- HOME -->
+    <section id="home" class="page active">
+      <div class="hero-banner">
+        <div class="hero-text">
+          <div class="eyebrow">PHANTOM / CONTROL PANEL</div>
+          <h1>Homework, <span class="hero-accent">automated.</span></h1>
+          <p>Your Discord bot for Sparx Maths, Sparx Reader, Sparx Science, Seneca and more. Use <code>/dashboard</code> in Discord to start.</p>
+          <div class="hero-actions">
+            <a id="heroDiscordBtn" href="#" target="_blank" rel="noreferrer" class="btn-primary">Open Discord</a>
+          </div>
+        </div>
+        <div class="hero-status-card">
+          <div class="status-card-header">
+            <span class="dot" id="heroDot"></span>
+            <b id="heroBot">Checking</b>
+          </div>
+          <small>Discord bot</small>
+          <div class="status-grid">
+            <div><span>Reader</span><b id="heroReader">Idle</b></div>
+            <div><span>Maths</span><b id="heroMaths">Idle</b></div>
+            <div><span>Science</span><b id="heroScience">Idle</b></div>
+            <div><span>Seneca</span><b id="heroSeneca">Idle</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-label">Active Session</div>
+      <div class="layout">
+        <div class="primary-col">
+          <section class="card session-card">
+            <div class="card-head">
+              <div>
+                <span class="eyebrow">LIVE SESSION</span>
+                <h2 id="readerTitle">No active session</h2>
+                <p id="readerSubtitle">Start a session from Discord to see it here.</p>
+              </div>
+              <span id="readerBadge" class="badge neutral">IDLE</span>
+            </div>
+            <div class="session-empty" id="sessionEmpty">
+              <div class="empty-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+              <h3 id="emptyTitle">Nothing running</h3>
+              <p id="emptyText">No active Phantom session right now.</p>
+            </div>
+            <div id="sessionPanel" class="hidden">
+              <div class="progress-label"><span>Session progress</span><b id="progressPct">0%</b></div>
+              <div class="progress-track"><div id="progressFill" class="progress-fill"></div></div>
+              <div class="progress-meta"><span id="srpText">0 / 0 SRP</span><span id="elapsed">0s</span></div>
+              <div class="stats">
+                <div><small>Questions</small><b id="questions">0</b></div>
+                <div><small>Correct</small><b id="correct">0</b></div>
+                <div><small>Accuracy</small><b id="accuracy">0%</b></div>
+                <div><small>Speed</small><b id="speed">0</b></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-head">
+              <div><span class="eyebrow">DIAGNOSTICS</span><h2>Live log</h2><p>Recent bot events.</p></div>
+              <button id="refreshLogs" class="btn-sm">Refresh</button>
+            </div>
+            <div id="logBox" class="logs"></div>
+          </section>
+        </div>
+
+        <div class="secondary-col">
+          <section class="card">
+            <div class="card-head"><div><span class="eyebrow">SYSTEM</span><h2>Service status</h2></div></div>
+            <div class="status-list">
+              <div><span>Discord bot</span><b id="botStatus">Starting</b></div>
+              <div><span>DM panel</span><b id="dmStatus">Idle</b></div>
+              <div><span>Reader</span><b id="readerStatus">Idle</b></div>
+              <div><span>Maths</span><b id="mathsStatus">Idle</b></div>
+              <div><span>Database</span><b id="dbStatus">Starting</b></div>
+              <div><span>API keys</span><b id="keysStatus">Loaded</b></div>
+            </div>
+          </section>
+          <section class="card">
+            <div class="card-head"><div><span class="eyebrow">QUICK LINK</span><h2>Discord server</h2><p>Control Phantom from Discord.</p></div></div>
+            <a id="discordLink" class="btn-ghost wide" href="#" target="_blank" rel="noreferrer">Open Discord</a>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <!-- PLATFORMS -->
+    <section id="platforms" class="page">
+      <div class="page-title">
+        <span class="eyebrow">SUPPORTED PLATFORMS</span>
+        <h1>Platforms</h1>
+        <p>Every platform Phantom can autocomplete. Start a session from Discord to use them.</p>
+      </div>
+      <div class="platform-grid">
+        <div class="platform-card active-platform">
+          <div class="platform-header"><div class="platform-icon sparx-maths-icon">SM</div><span class="platform-badge badge good">ACTIVE</span></div>
+          <h3>Sparx Maths</h3>
+          <p>Autocompletes your full Sparx Maths homework including bookwork codes, XP farming and independent learning.</p>
+          <div class="platform-features"><span>Homework</span><span>XP Farming</span><span>Bookwork PDF</span><span>Independent Learning</span></div>
+          <div class="platform-status"><span class="dot good"></span><b id="pf-maths">Idle</b></div>
+        </div>
+        <div class="platform-card active-platform">
+          <div class="platform-header"><div class="platform-icon sparx-reader-icon">SR</div><span class="platform-badge badge good">ACTIVE</span></div>
+          <h3>Sparx Reader</h3>
+          <p>Reads books and answers quiz questions automatically. Targets SRP or completes full books.</p>
+          <div class="platform-features"><span>SRP Targeting</span><span>Full Book Mode</span><span>Progress tracking</span></div>
+          <div class="platform-status"><span class="dot good"></span><b id="pf-reader">Idle</b></div>
+        </div>
+        <div class="platform-card active-platform">
+          <div class="platform-header"><div class="platform-icon sparx-science-icon">SS</div><span class="platform-badge badge good">ACTIVE</span></div>
+          <h3>Sparx Science</h3>
+          <p>Autocompletes Sparx Science homework tasks using AI-powered question answering.</p>
+          <div class="platform-features"><span>Homework</span><span>AI answering</span></div>
+          <div class="platform-status"><span class="dot good"></span><b id="pf-science">Idle</b></div>
+        </div>
+        <div class="platform-card active-platform">
+          <div class="platform-header"><div class="platform-icon seneca-icon">SN</div><span class="platform-badge badge good">ACTIVE</span></div>
+          <h3>Seneca Learning</h3>
+          <p>Completes Seneca assignments and courses automatically across all subjects.</p>
+          <div class="platform-features"><span>All subjects</span><span>Course completion</span></div>
+          <div class="platform-status"><span class="dot good"></span><b>Available</b></div>
+        </div>
+        <div class="platform-card active-platform">
+          <div class="platform-header"><div class="platform-icon languagenut-icon">LN</div><span class="platform-badge badge good">ACTIVE</span></div>
+          <h3>Languagenut</h3>
+          <p>Completes Languagenut vocabulary and language tasks with fake timing to avoid detection.</p>
+          <div class="platform-features"><span>All languages</span><span>Fake timing</span></div>
+          <div class="platform-status"><span class="dot good"></span><b>Available</b></div>
+        </div>
+        <div class="platform-card coming-platform">
+          <div class="platform-header"><div class="platform-icon drfrost-icon">DF</div><span class="platform-badge badge neutral">ARCHIVED</span></div>
+          <h3>Dr Frost Maths</h3>
+          <p>Previously supported via Puppeteer automation. Archived pending a non-browser implementation.</p>
+          <div class="platform-features"><span>Archived</span></div>
+          <div class="platform-status"><span class="dot"></span><b>Archived</b></div>
+        </div>
+        <div class="platform-card coming-platform">
+          <div class="platform-header"><div class="platform-icon educake-icon">EC</div><span class="platform-badge badge neutral">ARCHIVED</span></div>
+          <h3>Educake</h3>
+          <p>Previously supported via Puppeteer automation. Archived pending a non-browser implementation.</p>
+          <div class="platform-features"><span>Archived</span></div>
+          <div class="platform-status"><span class="dot"></span><b>Archived</b></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SESSION -->
+    <section id="session" class="page">
+      <div class="page-title">
+        <span class="eyebrow">LIVE SESSION</span><h1>Session Monitor</h1><p>Real-time progress of your active Phantom session.</p>
+      </div>
+      <div class="layout">
+        <div class="primary-col">
+          <section class="card big">
+            <div class="card-head">
+              <div><h2 id="readerPageState">Idle</h2><p id="readerPageText">No session is currently running.</p></div>
+              <span id="sessionBadge2" class="badge neutral">IDLE</span>
+            </div>
+            <div id="sessionPanel2" class="hidden" style="margin-top:20px">
+              <div class="progress-label"><span>Progress</span><b id="progressPct2">0%</b></div>
+              <div class="progress-track"><div id="progressFill2" class="progress-fill"></div></div>
+              <div class="progress-meta"><span id="srpText2">0 / 0 SRP</span><span id="elapsed2">0s</span></div>
+              <div class="stats" style="margin-top:18px">
+                <div><small>Questions</small><b id="questions2">0</b></div>
+                <div><small>Correct</small><b id="correct2">0</b></div>
+                <div><small>Accuracy</small><b id="accuracy2">0%</b></div>
+                <div><small>Speed</small><b id="speed2">0</b></div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class="secondary-col">
+          <section class="card">
+            <div class="card-head"><div><span class="eyebrow">MATHS</span><h2>Maths status</h2></div></div>
+            <div style="margin-top:14px;display:flex;align-items:center;gap:10px"><span class="dot" id="mathsDot2"></span><b id="mathsPageState">Idle</b></div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOGS -->
+    <section id="logs" class="page">
+      <div class="page-title"><span class="eyebrow">DIAGNOSTICS</span><h1>Logs</h1><p>Public diagnostic history from the bot.</p></div>
+      <section class="card big" style="margin-top:18px"><div id="allLogs" class="logs tall"></div></section>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="settings" class="page">
+      <div class="page-title"><span class="eyebrow">PREFERENCES</span><h1>Settings</h1><p>Dashboard behaviour.</p></div>
+      <section class="card big" style="margin-top:18px">
+        <label class="setting"><span>Automatic refresh</span><input id="autoRefresh" type="checkbox" checked></label>
+        <p style="color:var(--muted);font-size:13px;margin-top:12px">Dashboard data refreshes every five seconds while enabled.</p>
+      </section>
+    </section>
+  </main>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="/app.js"></script>
+</body>
+</html>
