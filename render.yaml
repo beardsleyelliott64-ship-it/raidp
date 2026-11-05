@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: discord-verification-bot
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py
+    envVars:
+      - key: DISCORD_TOKEN
+        sync: false
+      - key: DISCORD_CLIENT_ID
+        sync: false
+      - key: PUBLIC_URL
+        sync: false
+      - key: PORT
+        value: "10000"
+      - key: GUILD_ID
+        sync: false
