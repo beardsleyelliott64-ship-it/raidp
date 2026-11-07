@@ -1,0 +1,33 @@
+services:
+  - type: web
+    name: eamai
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DISCORD_TOKEN
+        sync: false
+      - key: CLIENT_ID
+        sync: false
+      - key: GUILD_ID
+        sync: false
+      - key: SUPABASEURL
+        sync: false
+      - key: SUPABASEKEY
+        sync: false
+      - key: STARTUP_WEBHOOK_URL
+        sync: false
+      - key: ERROR_WEBHOOK_URL
+        sync: false
+      - key: LOGS_WEBHOOK_URL
+        sync: false
+      - key: GUILD_ID
+        value: "1568044419351978107"
+      - key: BOT_PUBLIC_URL
+        fromService:
+          type: web
+          name: eamai
+          property: host
