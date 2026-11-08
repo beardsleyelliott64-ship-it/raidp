@@ -1,0 +1,23 @@
+{
+    "text": "## General Settings\n\n**🔑 API Keys**\nThe Gemini API Keys used for the AI.\n```${(userSetting.apikeys ?? []).join('\\n') || 'None Configured. Using Global AI'}\n```",
+    "colour": "onyx",
+    "settings": {
+        "add_apikey": {
+            "label": "Add an API Key",
+            "emoji": "pdf",
+            "inputs": [
+                {
+                    "type": "text",
+                    "id": "apikey",
+                    "label": "API Key",
+                    "placeholder": "AIzaSy..."
+                }
+            ]
+        },
+        "remove_apikeys": {
+            "label": "Remove API Keys",
+            "emoji": "x",
+            "inputs": []
+        }
+    }
+}
