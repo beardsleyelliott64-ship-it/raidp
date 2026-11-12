@@ -1,0 +1,24 @@
+'use strict';
+const assert = require('node:assert/strict');
+const Module = require('node:module');
+class Builder { setCustomId(v){this.customId=v;return this;} setLabel(v){this.label=v;return this;} setStyle(v){this.style=v;return this;} addComponents(...v){this.components=(this.components||[]).concat(v);return this;} }
+const originalLoad=Module._load;
+Module._load=function(request,parent,isMain){if(request==='discord.js')return{ActionRowBuilder:Builder,ButtonBuilder:Builder,ButtonStyle:{Primary:1,Secondary:2,Success:3,Danger:4},MessageFlags:{Ephemeral:64}};return originalLoad.call(this,request,parent,isMain);};
+process.env.JAILBREAK_OWNER_ID='owner-test';
+const runtime=require('../handlers/dashboardFeatureRuntime');
+const definition={description:'Tap to increase the counter.',initialState:{count:0,scoreParts:[2,3],score:0},view:[{type:'text',text:'Count: {{count}} / score {{score}}'}],actions:[{id:'add_one',label:'Add one',style:'success',steps:[{op:'increment',key:'count',value:1},{op:'sum',key:'score',from:'scoreParts'},{op:'if',key:'count',operator:'gte',value:1,then:[{op:'set',key:'status',value:'running'}],else:[]}]}]};
+assert.equal(runtime.validate(definition),definition);
+assert.throws(()=>runtime.validate({...definition,actions:[{...definition.actions[0],steps:[{op:'execute_code',key:'x'}]}]}),/Unsupported/);
+(async()=>{
+ const item={id:'12345678-1234-1234-1234-123456789012',label:'Counter',definition};
+ let replyPayload,updatePayload;
+ const launch={customId:`lumen_custom_ui_${item.id}`,user:{id:'owner-test'},reply:async p=>{replyPayload=p;}};
+ assert.equal(await runtime.handle(launch,[item]),true);
+ assert.match(replyPayload.content,/Count: 0/);
+ const actionId=replyPayload.components[0].components[0].customId;
+ const action={customId:actionId,user:{id:'owner-test'},update:async p=>{updatePayload=p;}};
+ assert.equal(await runtime.handle(action,[item]),true);
+ assert.match(updatePayload.content,/Count: 1/);
+ assert.match(updatePayload.content,/score 5/);
+ console.log('Dashboard feature runtime tests passed.');
+})().catch(e=>{console.error(e);process.exitCode=1;});
