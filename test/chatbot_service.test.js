@@ -1,0 +1,13 @@
+'use strict';
+const assert = require('node:assert/strict');
+const service = require('../chatbot/service');
+const { canFallback } = require('../gemini/generate');
+assert.equal(service.load().enabled, true);
+assert.equal(canFallback(Object.assign(new Error('quota exceeded'), {status:429})), true);
+assert.equal(canFallback(Object.assign(new Error('bad key'), {status:401})), false);
+const normalized = service.configure({ cooldownMs: 1, maxHistory: 100, allowedChannels: ['123', 4] });
+assert.equal(normalized.cooldownMs, 1500);
+assert.equal(normalized.maxHistory, 20);
+assert.deepEqual(normalized.allowedChannels, ['123']);
+service.configure({ cooldownMs: 4500, maxHistory: 12, allowedChannels: [] });
+console.log('chatbot service tests passed');
